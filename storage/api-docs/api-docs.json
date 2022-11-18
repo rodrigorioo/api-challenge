@@ -199,6 +199,11 @@
                                         "description": "ID de la categoría",
                                         "type": "integer",
                                         "nullable": true
+                                    },
+                                    "search": {
+                                        "description": "Texto que matchee con el nombre del producto",
+                                        "type": "string",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object",
@@ -206,7 +211,8 @@
                                     "order": "name_desc",
                                     "per_page": 500,
                                     "page": 2,
-                                    "category_id": 395
+                                    "category_id": 395,
+                                    "search": "Producto 5"
                                 }
                             }
                         }
