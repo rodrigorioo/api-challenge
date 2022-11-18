@@ -28,7 +28,7 @@ class ProductSeeder extends Seeder
                 $categoryId = $categoriesWithoutChildren->random();
 
                 $productData = Product::factory()->make([
-                    'name' => "Producto ".$i + $j,
+                    'name' => "Producto ".($i * 500) + $j,
                     'category_id' => $categoryId,
                 ]);
 

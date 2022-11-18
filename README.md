@@ -18,5 +18,5 @@ Toda la documentación sobre los parámetros que reciben y lo que devuelve está
 ## Consideraciones
 
 - La API contiene más de 500 categorías y más de 500.000 productos, por lo cual los endpoints devuelven resultados **_paginados_**.
-- El cliente es muy exigente con la **performance** de la web, por lo que quiere que todo se cargue en los posible en menos de 4 segundos.
+- El cliente es muy exigente con la **performance** de la web, por lo que quiere que todo se cargue en lo posible en menos de 4 segundos.
 - Las categorías están armadas en estructura de **árbol**, en donde una categoría puede tener hijas y a su vez esas hijas pueden tener otras hijas y así infinitamente. El endpoint de categorías devuelve las categorías _principales_ (que son las que no tienen un padre) con sus hijas.
