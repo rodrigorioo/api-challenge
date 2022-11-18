@@ -1,0 +1,484 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Challenge documentation",
+        "description": "Descripción de los endpoints para el desarrollo del challenge",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Lista todas las categorías padre (Es decir, que no tienen padre)",
+                "description": "Display a listing of the resource.",
+                "operationId": "8e17a9627dbed245cf032f867569cf11",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "order": {
+                                        "description": "Órden de los resultados. Valores admitidos: name_asc, name_desc",
+                                        "type": "string",
+                                        "default": "name_asc",
+                                        "nullable": true
+                                    },
+                                    "per_page": {
+                                        "description": "Cuántos items por página desea obtener",
+                                        "type": "integer",
+                                        "default": 500,
+                                        "nullable": true
+                                    },
+                                    "page": {
+                                        "description": "Página que desea obtener",
+                                        "type": "integer",
+                                        "default": 1,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "order": "name_desc",
+                                    "per_page": 100,
+                                    "page": 2
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "description": "Página actual que se está devolviendo",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "first_page_url": {
+                                            "description": "URL de la primer página",
+                                            "type": "string",
+                                            "example": "http://api-challenge.test/api/categories?page=1",
+                                            "nullable": "true"
+                                        },
+                                        "from": {
+                                            "description": "Desde que resultado empieza la página actual",
+                                            "type": "integer",
+                                            "example": 101
+                                        },
+                                        "next_page_url": {
+                                            "description": "URL de la página siguiente",
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": "true"
+                                        },
+                                        "path": {
+                                            "description": "URL base para listar los elementos",
+                                            "type": "string",
+                                            "example": "https://api-challenge.test/api/categories"
+                                        },
+                                        "per_page": {
+                                            "description": "Cuantos elementos por página se listan",
+                                            "type": "string",
+                                            "example": "100"
+                                        },
+                                        "prev_page_url": {
+                                            "description": "URL de la página anterior",
+                                            "type": "string",
+                                            "example": "https://api-challenge.test/api/categories?page=1",
+                                            "nullable": "true"
+                                        },
+                                        "to": {
+                                            "description": "Total de elementos mostrados hasta el momento",
+                                            "type": "integer",
+                                            "example": 147
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "$ref": "#/components/schemas/Category/properties/id"
+                                                    },
+                                                    "name": {
+                                                        "$ref": "#/components/schemas/Category/properties/name"
+                                                    },
+                                                    "father_id": {
+                                                        "$ref": "#/components/schemas/Category/properties/father_id"
+                                                    },
+                                                    "created_at": {
+                                                        "$ref": "#/components/schemas/Category/properties/created_at"
+                                                    },
+                                                    "updated_at": {
+                                                        "$ref": "#/components/schemas/Category/properties/updated_at"
+                                                    },
+                                                    "childrens_recursive": {
+                                                        "$ref": "#/components/schemas/Category/properties/childrens_recursive"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error en los parámetros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Descripción general del error",
+                                            "type": "string",
+                                            "example": "The per page must not be greater than 500."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "{name_of_parameter}": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "description": "Descripción del error",
+                                                        "type": "string",
+                                                        "example": "The per page must not be greater than 500."
+                                                    },
+                                                    "example": "per_page"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Lista todos los productos junto con su categoría",
+                "description": "Display a listing of the resource.",
+                "operationId": "ab015cc2055ac75e6d23c628675c26e7",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "order": {
+                                        "description": "Órden de los resultados. Valores admitidos: name_asc, name_desc, stock_asc, stock_desc, price_asc, price_desc",
+                                        "type": "string",
+                                        "default": "name_asc",
+                                        "nullable": true
+                                    },
+                                    "per_page": {
+                                        "description": "Cuántos items por página desea obtener",
+                                        "type": "integer",
+                                        "default": 50000,
+                                        "nullable": true
+                                    },
+                                    "page": {
+                                        "description": "Página que desea obtener",
+                                        "type": "integer",
+                                        "default": 1,
+                                        "nullable": true
+                                    },
+                                    "category_id": {
+                                        "description": "ID de la categoría",
+                                        "type": "integer",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "order": "name_desc",
+                                    "per_page": 500,
+                                    "page": 2,
+                                    "category_id": 395
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "description": "Página actual que se está devolviendo",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "first_page_url": {
+                                            "description": "URL de la primer página",
+                                            "type": "string",
+                                            "example": "http://api-challenge.test/api/products?page=1",
+                                            "nullable": "true"
+                                        },
+                                        "from": {
+                                            "description": "Desde que resultado empieza la página actual",
+                                            "type": "integer",
+                                            "example": 501
+                                        },
+                                        "next_page_url": {
+                                            "description": "URL de la página siguiente",
+                                            "type": "string",
+                                            "example": "http://api-challenge.test/api/products?page=3",
+                                            "nullable": "true"
+                                        },
+                                        "path": {
+                                            "description": "URL base para listar los elementos",
+                                            "type": "string",
+                                            "example": "https://api-challenge.test/api/products"
+                                        },
+                                        "per_page": {
+                                            "description": "Cuantos elementos por página se listan",
+                                            "type": "string",
+                                            "example": "500"
+                                        },
+                                        "prev_page_url": {
+                                            "description": "URL de la página anterior",
+                                            "type": "string",
+                                            "example": "http://api-challenge.test/api/products?page=1",
+                                            "nullable": "true"
+                                        },
+                                        "to": {
+                                            "description": "Total de elementos mostrados hasta el momento",
+                                            "type": "integer",
+                                            "example": 1000
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "$ref": "#/components/schemas/Product/properties/id"
+                                                    },
+                                                    "name": {
+                                                        "$ref": "#/components/schemas/Product/properties/name"
+                                                    },
+                                                    "stock": {
+                                                        "$ref": "#/components/schemas/Product/properties/stock"
+                                                    },
+                                                    "price": {
+                                                        "$ref": "#/components/schemas/Product/properties/price"
+                                                    },
+                                                    "image": {
+                                                        "$ref": "#/components/schemas/Product/properties/image"
+                                                    },
+                                                    "category_id": {
+                                                        "$ref": "#/components/schemas/Product/properties/category_id"
+                                                    },
+                                                    "created_at": {
+                                                        "$ref": "#/components/schemas/Product/properties/created_at"
+                                                    },
+                                                    "updated_at": {
+                                                        "$ref": "#/components/schemas/Product/properties/updated_at"
+                                                    },
+                                                    "category": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "$ref": "#/components/schemas/Category/properties/id"
+                                                            },
+                                                            "name": {
+                                                                "$ref": "#/components/schemas/Category/properties/name"
+                                                            },
+                                                            "father_id": {
+                                                                "$ref": "#/components/schemas/Category/properties/father_id"
+                                                            },
+                                                            "created_at": {
+                                                                "$ref": "#/components/schemas/Category/properties/created_at"
+                                                            },
+                                                            "updated_at": {
+                                                                "$ref": "#/components/schemas/Category/properties/updated_at"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error en los parámetros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Descripción general del error",
+                                            "type": "string",
+                                            "example": "The per page must not be greater than 50000."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "{name_of_parameter}": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "description": "Descripción del error",
+                                                        "type": "string",
+                                                        "example": "The per page must not be greater than 50000."
+                                                    },
+                                                    "example": "per_page"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Category": {
+                "title": "Category",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Categoría 7"
+                    },
+                    "father_id": {
+                        "type": "integer",
+                        "example": 3,
+                        "nullable": "true"
+                    },
+                    "created_at": {
+                        "description": "Timestamp in format: Y-m-d H:i:s",
+                        "type": "string",
+                        "example": "2022-11-15 20:15:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp in format: Y-m-d H:i:s",
+                        "type": "string",
+                        "example": "2022-11-15 20:15:00"
+                    },
+                    "father": {
+                        "description": "Father category",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        },
+                        "example": {
+                            "id": 3,
+                            "name": "Categoría 3",
+                            "father_id": null,
+                            "created_at": "2022-11-15 20:15:00",
+                            "updated_at": "2022-11-15 20:15:00",
+                            "childrens_recursive": []
+                        }
+                    },
+                    "childrens_recursive": {
+                        "description": "Childrens category",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        },
+                        "example": {
+                            "id": 9,
+                            "name": "Categoría 9",
+                            "father_id": 7,
+                            "created_at": "2022-11-15 20:15:00",
+                            "updated_at": "2022-11-15 20:15:00",
+                            "childrens_recursive": [
+                                {
+                                    "id": 12,
+                                    "name": "Categoría 12",
+                                    "father_id": 9,
+                                    "created_at": "2022-11-15 20:15:00",
+                                    "updated_at": "2022-11-15 20:15:00",
+                                    "childrens_recursive": []
+                                },
+                                {
+                                    "id": 13,
+                                    "name": "Categoría 13",
+                                    "father_id": 9,
+                                    "created_at": "2022-11-15 20:15:00",
+                                    "updated_at": "2022-11-15 20:15:00",
+                                    "childrens_recursive": []
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "title": "Product",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Producto 4"
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "default": 0,
+                        "example": 15
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "default": 0,
+                        "example": 90.1
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://via.placeholder.com/640x480.png/008888?text=ipsum"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "created_at": {
+                        "description": "Timestamp in format: Y-m-d H:i:s",
+                        "type": "string",
+                        "example": "2022-11-15 20:15:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp in format: Y-m-d H:i:s",
+                        "type": "string",
+                        "example": "2022-11-15 20:15:00"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/Category"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
